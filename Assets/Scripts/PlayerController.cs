@@ -82,7 +82,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (col.gameObject.tag == "FlowerCircle") {
-            score += col.transform.parent.GetComponent<FlowerCircleRotater>().point;
+            score += col.transform.parent.GetComponent<FlowerCircle>().point;
         }
     }
 
