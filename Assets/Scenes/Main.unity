@@ -1409,6 +1409,7 @@ GameObject:
   - component: {fileID: 1047225654}
   - component: {fileID: 1047225653}
   - component: {fileID: 1047225655}
+  - component: {fileID: 1047119934}
   m_Layer: 0
   m_Name: penguin
   m_TagString: Untagged
@@ -1416,6 +1417,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1047119934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1047119933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce84d0542728499469582d9b9b5bfe67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goal: {fileID: 1653489394}
 --- !u!1 &1047119935
 GameObject:
   m_ObjectHideFlags: 0
@@ -2921,6 +2935,10 @@ PrefabInstance:
       propertyPath: m_LocalScale.z
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 3}
+      propertyPath: waterMode
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 3}
 --- !u!4 &1372071155 stripped
@@ -2937,7 +2955,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1877876609639262, guid: 7b08fe66855e56c4991a3055447b7355, type: 3}
       propertyPath: m_Name
-      value: flower_3
+      value: Goal
       objectReference: {fileID: 0}
     - target: {fileID: 1877876609639262, guid: 7b08fe66855e56c4991a3055447b7355, type: 3}
       propertyPath: m_TagString
