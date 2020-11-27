@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
 
     public bool inWater;
 
+    float x;
+    float z;
+
     void Start()
     {
         transform.eulerAngles = new Vector3(180, 0, 0);
@@ -20,12 +23,16 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
+        x = Input.GetAxis("Horizontal");
+        z = Input.GetAxis("Vertical");
         Debug.Log(x);
-        rb.velocity = new Vector3(x * moveSpeed, rb.velocity.y, z * moveSpeed);
+        Debug.Log(z);
+
+        Vector3 moveDir = new Vector3(x, 0, z).normalized;
+
+        rb.velocity = new Vector3(moveDir.x * moveSpeed, rb.velocity.y, moveDir.z * moveSpeed);
     }
 
     private void OnTriggerEnter(Collider col) {
@@ -33,7 +40,7 @@ public class PlayerController : MonoBehaviour
             // エフェクト
 
 
-            rb.angularDrag = waterDrag;
+            //rb.angularDrag = waterDrag;
             //transform.eulerAngles = new Vector3(-30, 180, 0);
             //rb.isKinematic = true;
             inWater = true;
