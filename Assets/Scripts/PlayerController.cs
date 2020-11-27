@@ -7,11 +7,11 @@ public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
 
-    private float waterDrag;
-
     public float moveSpeed;
 
     public bool inWater;
+
+    private int score;
 
     float x;
     float z;
@@ -55,6 +55,10 @@ public class PlayerController : MonoBehaviour
             Destroy(col.gameObject, 0.5f);
 
             // エフェクト
+        }
+
+        if (col.gameObject.tag == "FlowerCircle") {
+            score += col.transform.parent.GetComponent<FlowerCircleRotater>().point;
         }
     }
 
