@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 straightRotation = new Vector3(180, 0, 0);
 
-    private Vector3 proneRotation = new Vector3(90, 0, 180);
+    private Vector3 proneRotation = new Vector3(-90, 0, 0);
 
     public enum AttitudeType {
         Straight,
@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        transform.eulerAngles = new Vector3(180, 0, 0);
+        transform.eulerAngles = straightRotation;
         rb = GetComponent<Rigidbody>();
         proneSpeed = fallSpeed / 2;
     }
@@ -53,7 +53,7 @@ public class PlayerController : MonoBehaviour
         if (attitudeType == AttitudeType.Straight) {
             rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
         } else {
-            rb.velocity = new Vector3(moveDir.x * moveSpeed, -proneSpeed, moveDir.z * moveSpeed);
+            rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
         }
     }
 
@@ -114,12 +114,14 @@ public class PlayerController : MonoBehaviour
         switch (attitudeType) {
             case AttitudeType.Straight:
                 attitudeType = AttitudeType.Prone;
-                transform.DORotate(proneRotation, 0.25f);
+                transform.DORotate(proneRotation, 0.25f, RotateMode.WorldAxisAdd);
+                rb.drag = 25.0f;
                 //transform.eulerAngles = proneRotation;
                 break;
             case AttitudeType.Prone:
                 attitudeType = AttitudeType.Straight;
                 transform.DORotate(straightRotation, 0.25f);
+                rb.drag = 0f;
                 //transform.eulerAngles = straightRotation;
                 break;
         }
