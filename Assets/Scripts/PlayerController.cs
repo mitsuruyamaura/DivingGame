@@ -16,6 +16,9 @@ public class PlayerController : MonoBehaviour
     float x;
     float z;
 
+    [SerializeField]
+    private GameObject waterEffectPrefab = null;
+
     void Start()
     {
         transform.eulerAngles = new Vector3(180, 0, 0);
@@ -38,8 +41,11 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerEnter(Collider col) {
         if (col.gameObject.tag == "Water" && inWater == false) {
             // エフェクト
+            GameObject effect = Instantiate(waterEffectPrefab, transform.position, Quaternion.identity);
+            effect.transform.position = new Vector3(effect.transform.position.x, effect.transform.position.y, effect.transform.position.z - 0.5f);
 
 
+            Destroy(effect, 2.0f);
             //rb.angularDrag = waterDrag;
             //transform.eulerAngles = new Vector3(-30, 180, 0);
             //rb.isKinematic = true;
