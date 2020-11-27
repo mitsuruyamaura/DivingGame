@@ -9,6 +9,9 @@ public class PlayerController : MonoBehaviour
 
     public float moveSpeed;
 
+    public float fallSpeed;
+    private float proneSpeed;
+
     public bool inWater;
 
     private int score;
@@ -19,10 +22,22 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private GameObject waterEffectPrefab = null;
 
+    private Vector3 straightRotation = new Vector3(180, 0, 0);
+
+    private Vector3 proneRotation = new Vector3(90, 0, 180);
+
+    public enum AttitudeType {
+        Straight,
+        Prone,
+    }
+    public AttitudeType attitudeType;
+
+
     void Start()
     {
         transform.eulerAngles = new Vector3(180, 0, 0);
         rb = GetComponent<Rigidbody>();
+        proneSpeed = fallSpeed / 2;
     }
 
     // Update is called once per frame
@@ -35,7 +50,11 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDir = new Vector3(x, 0, z).normalized;
 
-        rb.velocity = new Vector3(moveDir.x * moveSpeed, rb.velocity.y, moveDir.z * moveSpeed);
+        if (attitudeType == AttitudeType.Straight) {
+            rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
+        } else {
+            rb.velocity = new Vector3(moveDir.x * moveSpeed, -proneSpeed, moveDir.z * moveSpeed);
+        }
     }
 
     private void OnTriggerEnter(Collider col) {
@@ -58,9 +77,8 @@ public class PlayerController : MonoBehaviour
         if (col.gameObject.tag == "Flower") {
             Debug.Log("ステージクリア");
 
-            Destroy(col.gameObject, 0.5f);
+            Destroy(col.gameObject, 1.5f);
 
-            // エフェクト
         }
 
         if (col.gameObject.tag == "FlowerCircle") {
@@ -68,6 +86,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 水面に顔を出す
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator OutOfWater()
     {
         yield return new WaitForSeconds(1.0f);
@@ -77,5 +99,29 @@ public class PlayerController : MonoBehaviour
         transform.eulerAngles = new Vector3(-30, 180, 0);
 
         transform.DOMoveY(0, 1.0f);
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            ChangeAttitude();
+        }
+    }
+
+    /// <summary>
+    /// 姿勢の変更
+    /// </summary>
+    private void ChangeAttitude() {
+        switch (attitudeType) {
+            case AttitudeType.Straight:
+                attitudeType = AttitudeType.Prone;
+                transform.DORotate(proneRotation, 0.25f);
+                //transform.eulerAngles = proneRotation;
+                break;
+            case AttitudeType.Prone:
+                attitudeType = AttitudeType.Straight;
+                transform.DORotate(straightRotation, 0.25f);
+                //transform.eulerAngles = straightRotation;
+                break;
+        }
     }
 }
