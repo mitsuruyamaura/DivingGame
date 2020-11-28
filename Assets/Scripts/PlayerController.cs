@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using Coffee.UIExtensions;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed;
 
     public float fallSpeed;
-    private float proneSpeed;
 
     public bool inWater;
 
@@ -40,20 +40,28 @@ public class PlayerController : MonoBehaviour
     private Image imgGauge = null;
 
 
+    private float attitudeTimer;
+
+    private float chargeTime = 2.0f;
+
+    private bool isCharge;
+
+    [SerializeField]
+    private ShinyEffectForUGUI shinyEffect = null;
+
     void Start()
     {
+        // 初期の姿勢を設定
         transform.eulerAngles = straightRotation;
         rb = GetComponent<Rigidbody>();
-        proneSpeed = fallSpeed / 2;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
-        Debug.Log(x);
-        Debug.Log(z);
+        //Debug.Log(x);
+        //Debug.Log(z);
 
         Vector3 moveDir = new Vector3(x, 0, z).normalized;
 
@@ -118,6 +126,47 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             ChangeAttitude();
         }
+
+        // 未チャージ状態かつ、姿勢が普通の状態
+        if (isCharge == false && attitudeType == AttitudeType.Straight) {
+
+            // チャージを行う
+            attitudeTimer += Time.deltaTime;
+
+            // ゲージ表示を更新
+            imgGauge.DOFillAmount(attitudeTimer / chargeTime, 0.1f);
+
+            // ゲージが満タンになったら
+            if (attitudeTimer >= chargeTime) {
+
+                // チャージ状態にする
+                isCharge = true;
+
+                attitudeTimer = chargeTime;
+
+                // 満タン時のエフェクト
+                shinyEffect.Play(0.5f);
+            }
+        }
+
+        // 姿勢が伏せの状態
+        if (attitudeType == AttitudeType.Prone) {
+
+            // ゲージを減らす
+            attitudeTimer -= Time.deltaTime;
+
+            // ゲージ表示を更新
+            imgGauge.DOFillAmount(attitudeTimer / chargeTime, 0.1f);
+
+            // ゲージが0になったら
+            if (attitudeTimer <= 0) {
+
+                attitudeTimer = 0;
+
+                // 強制的に姿勢を直滑降に戻す
+                ChangeAttitude();
+            }
+        }            
     }
 
     /// <summary>
@@ -126,12 +175,18 @@ public class PlayerController : MonoBehaviour
     private void ChangeAttitude() {
         switch (attitudeType) {
             case AttitudeType.Straight:
+                if(isCharge == false) {
+                    return;
+                }
+
+                isCharge = false;
                 attitudeType = AttitudeType.Prone;
                 transform.DORotate(proneRotation, 0.25f, RotateMode.WorldAxisAdd);
                 rb.drag = 25.0f;
                 //transform.eulerAngles = proneRotation;
                 break;
             case AttitudeType.Prone:
+
                 attitudeType = AttitudeType.Straight;
                 transform.DORotate(straightRotation, 0.25f);
                 rb.drag = 0f;
