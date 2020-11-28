@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class DistanceChecker : MonoBehaviour
 {
     private PlayerController player;
@@ -12,6 +12,9 @@ public class DistanceChecker : MonoBehaviour
     private bool isGoal;
 
     private float distance;
+
+    [SerializeField]
+    private Text txtDistance;
 
     void Start()
     {
@@ -26,10 +29,12 @@ public class DistanceChecker : MonoBehaviour
         }
 
         distance = player.transform.position.y - goal.position.y;
+        txtDistance.text = distance.ToString("F2");
         Debug.Log(distance.ToString("F2"));
 
         if(distance <= 0) {
             isGoal = true;
+            txtDistance.text = 0.ToString("F2");
             Debug.Log("Goal");
         }
     }

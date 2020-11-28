@@ -12,8 +12,8 @@ public class FlowerCircle : MonoBehaviour
     [SerializeField]
     private GameObject effectPrefab;
 
-    //[SerializeField]
-    //private BoxCollider boxCollider;
+    [SerializeField]
+    private BoxCollider boxCollider;
 
     void Start()
     {
@@ -30,6 +30,7 @@ public class FlowerCircle : MonoBehaviour
     //}
 
     private void OnTriggerEnter(Collider other) {
+        boxCollider.enabled = false;
 
         transform.SetParent(other.transform);
 
@@ -37,7 +38,7 @@ public class FlowerCircle : MonoBehaviour
     }
 
     private IEnumerator PlayGetEffect() {
-        //boxCollider.enabled = false;
+
         
 
         Sequence sequence = DOTween.Sequence();
