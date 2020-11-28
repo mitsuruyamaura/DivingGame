@@ -8,6 +8,7 @@ using Coffee.UIExtensions;
 public class PlayerController : MonoBehaviour
 {
     private Rigidbody rb;
+    private Animator anim;
 
     public float moveSpeed;
 
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
         // 初期の姿勢を設定
         transform.eulerAngles = straightRotation;
         rb = GetComponent<Rigidbody>();
+        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -181,6 +183,8 @@ public class PlayerController : MonoBehaviour
 
                 isCharge = false;
                 attitudeType = AttitudeType.Prone;
+                anim.SetBool("Prone", true);
+
                 transform.DORotate(proneRotation, 0.25f, RotateMode.WorldAxisAdd);
                 rb.drag = 25.0f;
                 //transform.eulerAngles = proneRotation;
@@ -188,6 +192,7 @@ public class PlayerController : MonoBehaviour
             case AttitudeType.Prone:
 
                 attitudeType = AttitudeType.Straight;
+                anim.SetBool("Prone", false);
                 transform.DORotate(straightRotation, 0.25f);
                 rb.drag = 0f;
                 //transform.eulerAngles = straightRotation;
