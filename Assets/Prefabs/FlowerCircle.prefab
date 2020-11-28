@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7574985511505029999}
-  - component: {fileID: 7574985511505029998}
   - component: {fileID: 7574985511505029996}
+  - component: {fileID: 8878853384441555369}
   m_Layer: 0
   m_Name: FlowerCircle
   m_TagString: FlowerCircle
@@ -41,20 +41,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7574985511505029998
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7574985511505029993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d26da818fb06104da83d656caf72c04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  point: 100
-  effectPrefab: {fileID: 100010, guid: 214bf6b1f924e43108a92f13c4db31a2, type: 3}
 --- !u!54 &7574985511505029996
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -71,6 +57,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8878853384441555369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7574985511505029993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfbbafd7e7276ac49a61ac106f29660b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  point: 10
+  effectPrefab: {fileID: 100010, guid: 214bf6b1f924e43108a92f13c4db31a2, type: 3}
+  boxCollider: {fileID: 7574985512016266701}
 --- !u!1 &7574985512016266703
 GameObject:
   m_ObjectHideFlags: 0

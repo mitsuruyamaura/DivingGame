@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -31,6 +32,12 @@ public class PlayerController : MonoBehaviour
         Prone,
     }
     public AttitudeType attitudeType;
+
+    [SerializeField]
+    private Text txtScore = null;
+
+    [SerializeField]
+    private Image imgGauge = null;
 
 
     void Start()
@@ -83,6 +90,12 @@ public class PlayerController : MonoBehaviour
 
         if (col.gameObject.tag == "FlowerCircle") {
             score += col.transform.parent.GetComponent<FlowerCircle>().point;
+
+            txtScore.text = score.ToString();
+
+            // エフェクト
+
+
         }
     }
 
