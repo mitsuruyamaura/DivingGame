@@ -73,7 +73,7 @@ public class ResultPopUp : MonoBehaviour
 
         // すでにタップ済の場合
         if (isClickable == true) {
-            // 重複防止のためリトライ処理を行わない
+            // 重複防止のためリトライes処理を行わない
             return;
         }
 

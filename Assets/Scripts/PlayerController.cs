@@ -53,7 +53,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Button btnChangeAttitude;
 
-    
+    [SerializeField]
+    private Joystick joystick;
+
 
     void Start()
     {
@@ -70,6 +72,9 @@ public class PlayerController : MonoBehaviour
         z = Input.GetAxis("Vertical");
         //Debug.Log(x);
         //Debug.Log(z);
+
+        x = joystick.Horizontal;
+        z = joystick.Vertical;
 
         Vector3 moveDir = new Vector3(x, 0, z).normalized;
 
