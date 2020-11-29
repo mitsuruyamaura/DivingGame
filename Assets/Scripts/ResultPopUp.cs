@@ -19,6 +19,8 @@ public class ResultPopUp : MonoBehaviour
     [SerializeField]
     private Image imgTitle;
 
+    private bool isClickable;
+
 
     void Start() {
         // リザルトを非表示にしておく
@@ -30,6 +32,9 @@ public class ResultPopUp : MonoBehaviour
 
         // ボタンを切っておく
         btnRetry.interactable = false;
+
+        // ボタンの連打防止
+        isClickable = false;
     }
 
     /// <summary>
@@ -65,6 +70,14 @@ public class ResultPopUp : MonoBehaviour
     /// リザルトをタップした際の処理
     /// </summary>
     private void OnClickRetry() {
+
+        // すでにタップ済の場合
+        if (isClickable == true) {
+            // 重複防止のためリトライ処理を行わない
+            return;
+        }
+
+        isClickable = true;
         StartCoroutine(Retry());
     }
 
