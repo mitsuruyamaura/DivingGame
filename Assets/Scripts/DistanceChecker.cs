@@ -20,6 +20,9 @@ public class DistanceChecker : MonoBehaviour        // GameManagerにする
     [SerializeField]
     private ResultPopUp resultPopUp;
 
+    [SerializeField]
+    private CameraController cameraController;
+
     void Start()
     {
         //player = GetComponent<PlayerController>();
@@ -43,6 +46,9 @@ public class DistanceChecker : MonoBehaviour        // GameManagerにする
 
             // リザルト表示
             resultPopUp.DisplayResult();
+
+            // カメラを初期位置に戻す
+            cameraController.SetDefaultCamera();
         }
     }
 }
