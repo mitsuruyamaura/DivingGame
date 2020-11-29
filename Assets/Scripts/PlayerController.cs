@@ -50,12 +50,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private ShinyEffectForUGUI shinyEffect = null;
 
+    [SerializeField]
+    private Button btnChangeAttitude;
+
     void Start()
     {
         // 初期の姿勢を設定
         transform.eulerAngles = straightRotation;
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+        btnChangeAttitude.onClick.AddListener(ChangeAttitude);
     }
 
     void FixedUpdate()
@@ -125,9 +129,9 @@ public class PlayerController : MonoBehaviour
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            ChangeAttitude();
-        }
+        //if (Input.GetKeyDown(KeyCode.Space)) {
+        //    ChangeAttitude();
+        //}
 
         // 未チャージ状態かつ、姿勢が普通の状態
         if (isCharge == false && attitudeType == AttitudeType.Straight) {
