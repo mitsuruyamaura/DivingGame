@@ -53,6 +53,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Button btnChangeAttitude;
 
+    
+
     void Start()
     {
         // 初期の姿勢を設定
@@ -60,10 +62,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
         btnChangeAttitude.onClick.AddListener(ChangeAttitude);
+        btnChangeAttitude.interactable = false;
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
         //Debug.Log(x);
@@ -71,11 +73,7 @@ public class PlayerController : MonoBehaviour
 
         Vector3 moveDir = new Vector3(x, 0, z).normalized;
 
-        if (attitudeType == AttitudeType.Straight) {
-            rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
-        } else {
-            rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
-        }
+        rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
     }
 
     private void OnTriggerEnter(Collider col) {
@@ -142,6 +140,8 @@ public class PlayerController : MonoBehaviour
             // ゲージ表示を更新
             imgGauge.DOFillAmount(attitudeTimer / chargeTime, 0.1f);
 
+            btnChangeAttitude.interactable = false;
+
             // ゲージが満タンになったら
             if (attitudeTimer >= chargeTime) {
 
@@ -149,6 +149,8 @@ public class PlayerController : MonoBehaviour
                 isCharge = true;
 
                 attitudeTimer = chargeTime;
+
+                btnChangeAttitude.interactable = true;
 
                 // 満タン時のエフェクト
                 shinyEffect.Play(0.5f);
@@ -168,6 +170,8 @@ public class PlayerController : MonoBehaviour
             if (attitudeTimer <= 0) {
 
                 attitudeTimer = 0;
+
+                btnChangeAttitude.interactable = false;
 
                 // 強制的に姿勢を直滑降に戻す
                 ChangeAttitude();
@@ -191,6 +195,8 @@ public class PlayerController : MonoBehaviour
 
                 transform.DORotate(proneRotation, 0.25f, RotateMode.WorldAxisAdd);
                 rb.drag = 25.0f;
+
+                btnChangeAttitude.transform.GetChild(0).transform.DORotate(new Vector3(0, 0, 180), 0.25f);
                 //transform.eulerAngles = proneRotation;
                 break;
             case AttitudeType.Prone:
@@ -199,6 +205,8 @@ public class PlayerController : MonoBehaviour
                 anim.SetBool("Prone", false);
                 transform.DORotate(straightRotation, 0.25f);
                 rb.drag = 0f;
+
+                btnChangeAttitude.transform.GetChild(0).transform.DORotate(new Vector3(0, 0, 90), 0.25f);
                 //transform.eulerAngles = straightRotation;
                 break;
         }
