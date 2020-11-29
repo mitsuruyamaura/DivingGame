@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class DistanceChecker : MonoBehaviour
+public class DistanceChecker : MonoBehaviour        // GameManagerにする
 {
+    [SerializeField]
     private PlayerController player;
 
     [SerializeField]
@@ -16,9 +17,12 @@ public class DistanceChecker : MonoBehaviour
     [SerializeField]
     private Text txtDistance;
 
+    [SerializeField]
+    private ResultPopUp resultPopUp;
+
     void Start()
     {
-        player = GetComponent<PlayerController>();
+        //player = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -36,6 +40,9 @@ public class DistanceChecker : MonoBehaviour
             isGoal = true;
             txtDistance.text = 0.ToString("F2");
             Debug.Log("Goal");
+
+            // リザルト表示
+            resultPopUp.DisplayResult();
         }
     }
 }
