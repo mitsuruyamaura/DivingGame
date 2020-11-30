@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
 
     private Vector3 proneRotation = new Vector3(-90, 0, 0);
 
+    [SerializeField]
+    private AudioClip waterSE = null;
+
     public enum AttitudeType {
         Straight,
         Prone,
@@ -89,6 +92,10 @@ public class PlayerController : MonoBehaviour
 
 
             Destroy(effect, 2.0f);
+
+            // SE
+            AudioSource.PlayClipAtPoint(waterSE, transform.position);
+
             //rb.angularDrag = waterDrag;
             //transform.eulerAngles = new Vector3(-30, 180, 0);
             //rb.isKinematic = true;
