@@ -10,10 +10,13 @@ public class FlowerCircle : MonoBehaviour
     //private GameObject[] flowerObjs;
 
     [SerializeField]
-    private GameObject effectPrefab;
+    private GameObject effectPrefab= null;
 
     [SerializeField]
-    private BoxCollider boxCollider;
+    private BoxCollider boxCollider = null;
+
+    [SerializeField]
+    private AudioClip flowerSE;
 
     void Start()
     {
@@ -38,8 +41,9 @@ public class FlowerCircle : MonoBehaviour
     }
 
     private IEnumerator PlayGetEffect() {
+        // SE
+        AudioSource.PlayClipAtPoint(flowerSE, transform.position);
 
-        
 
         Sequence sequence = DOTween.Sequence();
         sequence.Append(transform.DOScale(Vector3.zero, 1.0f));

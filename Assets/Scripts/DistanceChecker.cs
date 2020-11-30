@@ -15,17 +15,28 @@ public class DistanceChecker : MonoBehaviour        // GameManagerにする
     private float distance;
 
     [SerializeField]
-    private Text txtDistance;
+    private Text txtDistance = null;
 
     [SerializeField]
-    private ResultPopUp resultPopUp;
+    private ResultPopUp resultPopUp = null;
 
     [SerializeField]
-    private CameraController cameraController;
+    private CameraController cameraController = null;
+
+    [SerializeField]
+    private AudioClip[] bgms = null;
+
+
+    private AudioSource audioSource;
 
     void Start()
     {
         //player = GetComponent<PlayerController>();
+        audioSource = GetComponent<AudioSource>();
+
+        // BGM再生
+        audioSource.clip = bgms[0];
+        audioSource.Play();
     }
 
     // Update is called once per frame
@@ -49,6 +60,11 @@ public class DistanceChecker : MonoBehaviour        // GameManagerにする
 
             // カメラを初期位置に戻す
             cameraController.SetDefaultCamera();
+
+            // BGM切り替え
+            audioSource.Stop();
+            audioSource.clip = bgms[1];
+            audioSource.Play();
         }
     }
 }
