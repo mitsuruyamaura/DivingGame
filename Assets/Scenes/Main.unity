@@ -966,7 +966,7 @@ BoxCollider:
   m_GameObject: {fileID: 540464906}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 10, y: 0.0024917603, z: 10}
   m_Center: {x: 0, y: -0.0012458802, z: 0}
@@ -6373,7 +6373,7 @@ PrefabInstance:
     - target: {fileID: 7574985511505029993, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7574985511505029999, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
         type: 3}
@@ -6383,7 +6383,7 @@ PrefabInstance:
     - target: {fileID: 7574985511505029999, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 40
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7574985511505029999, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
         type: 3}
@@ -6444,6 +6444,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8878853384441555369, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
+        type: 3}
+      propertyPath: isMoveing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8878853384441555369, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
+        type: 3}
+      propertyPath: duration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8878853384441555369, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
+        type: 3}
+      propertyPath: moveRange
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70b812f7b9d23e749b7f2734d3e7d79e, type: 3}
@@ -8333,3 +8348,6 @@ MonoBehaviour:
   boxCollider: {fileID: 7574985511416657128}
   effectPrefab: {fileID: 100010, guid: 214bf6b1f924e43108a92f13c4db31a2, type: 3}
   flowerSE: {fileID: 0}
+  isMoveing: 0
+  duration: 0
+  moveDistance: 0
