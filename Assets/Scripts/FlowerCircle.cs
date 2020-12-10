@@ -19,10 +19,23 @@ public class FlowerCircle : MonoBehaviour
     [SerializeField,HideInInspector]
     private AudioClip flowerSE;
 
+
+    [SerializeField, Header("移動させる場合スイッチ入れる")]
+    private bool isMoveing;
+
+    [SerializeField, Header("移動時間")]
+    private float duration;
+
+    [SerializeField, Header("移動距離")]
+    private float moveDistance;
+
     void Start()
     {
         transform.DORotate(new Vector3(0, 360, 0), 5.0f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
         //flowerObjs = GetAllChildren();
+
+        if(isMoveing)
+        transform.DOMoveZ(transform.position.z + moveDistance, duration).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
     }
 
     //private GameObject[] GetAllChildren() {
@@ -34,6 +47,12 @@ public class FlowerCircle : MonoBehaviour
     //}
 
     private void OnTriggerEnter(Collider other) {
+
+        // 水面に触れても判定しない
+        if (other.gameObject.tag == "Water") {
+            return;
+        }
+
         boxCollider.enabled = false;
 
         transform.SetParent(other.transform);
