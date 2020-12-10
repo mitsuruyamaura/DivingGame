@@ -6,18 +6,21 @@ using UnityEngine.UI;
 public class CameraController : MonoBehaviour
 {
     [SerializeField]
-    private PlayerController player;
-        
+    private PlayerController playerController = null;
+
+    [SerializeField]
+    private Player playerObj = null;
+
     private Vector3 offset;
 
     [SerializeField]
-    private Camera fpsCamera;
+    private Camera fpsCamera = null;
 
     [SerializeField]
-    private Camera selfishCamera;
+    private Camera selfishCamera = null;
 
     [SerializeField]
-    private Button btnChangeCameara;
+    private Button btnChangeCameara = null;
 
     private int cameraIndex;
     private Camera mainCamera;
@@ -25,7 +28,11 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        offset = transform.position - player.transform.position;
+        offset = transform.position - playerController.transform.position;
+        if (playerObj != null) {
+            offset = transform.position - playerObj.transform.position;
+        }
+
         mainCamera = Camera.main;
         btnChangeCameara.onClick.AddListener(ChangeCamera);
         SetDefaultCamera();
@@ -33,13 +40,24 @@ public class CameraController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
-        if (player.inWater == true) {
+        //if (playerController.inWater == true) {
+        //    return;
+        //}
+
+        //if (playerController != null) {
+        //    transform.position = playerController.transform.position + offset;
+        //}
+
+
+        if (playerObj.inWater == true) {
             return;
         }
 
-        if (player != null) {
-            transform.position = player.transform.position + offset;
+        if (playerObj != null) {
+            transform.position = playerObj.transform.position + offset;
         }
+
+
     }
 
     /// <summary>

@@ -7,7 +7,7 @@ namespace Coffee.UIExtensions
 {
 	public class Demo_ShinyEffectForUGUI : MonoBehaviour
 	{
-		[SerializeField] RectMask2D mask;
+		[SerializeField] RectMask2D mask = null;
 
 		void Start()
 		{

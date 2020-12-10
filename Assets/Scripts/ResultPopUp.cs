@@ -8,16 +8,16 @@ using UnityEngine.SceneManagement;
 public class ResultPopUp : MonoBehaviour
 {
     [SerializeField]
-    private Button btnRetry;
+    private Button btnRetry = null;
 
     [SerializeField]
-    private CanvasGroup canvasGroupTxt;
+    private CanvasGroup canvasGroupTxt = null;
 
     [SerializeField]
-    private CanvasGroup canvasGroupPopUp;
+    private CanvasGroup canvasGroupPopUp = null;
 
     [SerializeField]
-    private Image imgTitle;
+    private Image imgTitle = null;
 
     private bool isClickable;
 
@@ -42,7 +42,12 @@ public class ResultPopUp : MonoBehaviour
     /// </summary>
     public void DisplayResult() {
         // CanvasGroup のアルファを変更してリザルト表示
-        canvasGroupPopUp.DOFade(1.0f, 1.0f).OnComplete(() => { btnRetry.interactable = true; }); ;
+        canvasGroupPopUp.DOFade(1.0f, 1.0f)
+            .OnComplete(() => 
+            { 
+                btnRetry.interactable = true;
+                canvasGroupTxt.DOFade(1.0f, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+            });
 
 
         // タイトルの大きさを変更
@@ -63,7 +68,7 @@ public class ResultPopUp : MonoBehaviour
         //canvasGroupTxt.DOFade(0, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
 
         //btnRetry.interactable = true;
-        canvasGroupTxt.DOFade(1.0f, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+        //canvasGroupTxt.DOFade(1.0f, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
     }
 
     /// <summary>
