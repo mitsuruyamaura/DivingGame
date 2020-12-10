@@ -5,22 +5,8 @@ using DG.Tweening;
 using UnityEngine.UI;
 using Coffee.UIExtensions;
 
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
-    private Rigidbody rb;
-
-    float x;
-    float z;
-
-    private Vector3 straightRotation = new Vector3(180, 0, 0);
-
-    private int score;
-
-    private Vector3 proneRotation = new Vector3(-90, 0, 0);
-
-    private bool isCharge;
-
-
     [Header("移動速度")]
     public float moveSpeed;
 
@@ -38,6 +24,20 @@ public class PlayerController : MonoBehaviour
     [Header("現在のキャラの姿勢")]
     public AttitudeType attitudeType;
 
+    private Rigidbody rb;
+
+    private float x;
+    private float z;
+
+    private Vector3 straightRotation = new Vector3(180, 0, 0);
+
+    private Vector3 proneRotation = new Vector3(-90, 0, 0);
+
+    private int score;
+
+    private float attitudeTimer;
+    private float chargeTime = 2.0f;
+    private bool isCharge;
 
     [SerializeField, Header("水しぶきのエフェクト")]
     private GameObject waterEffectPrefab = null;
@@ -46,20 +46,13 @@ public class PlayerController : MonoBehaviour
     private AudioClip splashSE = null;
 
     [SerializeField]
-    private Text txtScore = null;
+    private Text txtScore;
 
     [SerializeField]
     private Button btnChangeAttitude = null;
 
-
     [SerializeField]
     private Image imgGauge = null;
-
-
-    private float attitudeTimer;
-
-    private float chargeTime = 2.0f;
-
 
     [SerializeField]
     private ShinyEffectForUGUI shinyEffect = null;
@@ -68,30 +61,19 @@ public class PlayerController : MonoBehaviour
     private Animator anim;
 
 
+    void Start() {
+        rb = GetComponent<Rigidbody>();
 
-    // mi
-
-
-
-
-
-    [SerializeField,HideInInspector]
-    private Joystick joystick = null;
-
-
-    void Start()
-    {
         // 初期の姿勢を設定
         transform.eulerAngles = straightRotation;
-        rb = GetComponent<Rigidbody>();
-        btnChangeAttitude.onClick.AddListener(ChangeAttitude);
 
         // 現在の姿勢を「直滑降」に変更(いままでの姿勢)
         attitudeType = AttitudeType.Straight;
 
+        btnChangeAttitude.onClick.AddListener(ChangeAttitude);
+
         btnChangeAttitude.interactable = false;
 
-        // mi
         anim = GetComponent<Animator>();
 
     }
@@ -102,56 +84,48 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        // キー入力の受付
         x = Input.GetAxis("Horizontal");
         z = Input.GetAxis("Vertical");
 
+        // キー入力の確認
         //Debug.Log(x);
         //Debug.Log(z);
 
-        x = joystick.Horizontal;
-        z = joystick.Vertical;
-
-        //Vector3 moveDir = new Vector3(x, 0, z);//.normalized;
-
-        //rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
-
+        // velocity(速度)に新しい値を代入して移動
         rb.velocity = new Vector3(x * moveSpeed, -fallSpeed, z * moveSpeed);
 
-        Debug.Log(rb.velocity);
+        // velocityの値の確認
+        //Debug.Log(rb.velocity);
     }
 
     private void OnTriggerEnter(Collider col) {
         if (col.gameObject.tag == "Water" && inWater == false) {
-            // エフェクト
+
+            inWater = true;
+
+
+            // TODO　水しぶきのエフェクトを生成
             GameObject effect = Instantiate(waterEffectPrefab, transform.position, Quaternion.identity);
             effect.transform.position = new Vector3(effect.transform.position.x, effect.transform.position.y, effect.transform.position.z - 0.5f);
 
 
-            Destroy(effect, 2.0f);
-
-            // SE
             AudioSource.PlayClipAtPoint(splashSE, transform.position);
 
-            //rb.angularDrag = waterDrag;
-            //transform.eulerAngles = new Vector3(-30, 180, 0);
-            //rb.isKinematic = true;
-            inWater = true;
+            Destroy(effect, 2.0f);
 
             StartCoroutine(OutOfWater());
-            //transform.DORotate(Vector3.zero, 1.0f);
+
+            //Debug.Log("着水 :" + inWater);
         }
-
-        if (col.gameObject.tag == "Flower") {
-            Debug.Log("ステージクリア");
-
-            Destroy(col.gameObject, 1.5f);
-
-        }
-
         if (col.gameObject.tag == "FlowerCircle") {
 
-            // TODO 得点加算
+            //Debug.Log("花輪ゲット");
+
+            // 得点加算
             score += col.transform.parent.GetComponent<FlowerCircle>().point;
+
+            Debug.Log("現在の得点 : " + score);
 
             txtScore.text = score.ToString();
 
@@ -165,8 +139,9 @@ public class PlayerController : MonoBehaviour
     /// 水面に顔を出す
     /// </summary>
     /// <returns></returns>
-    private IEnumerator OutOfWater()
-    {
+    private IEnumerator OutOfWater() {
+        
+
         yield return new WaitForSeconds(1.0f);
 
         rb.isKinematic = true;
@@ -183,11 +158,11 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        //if (Input.GetKeyDown(KeyCode.Space)) {
-        //    ChangeAttitude();
-        //}
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            ChangeAttitude();
+        }
 
-        // 未チャージ状態かつ、姿勢が普通の状態
+        // 姿勢が普通の状態
         if (isCharge == false && attitudeType == AttitudeType.Straight) {
 
             // チャージを行う
@@ -204,8 +179,10 @@ public class PlayerController : MonoBehaviour
                 // チャージ状態にする
                 isCharge = true;
 
+                // ボタンを活性化(押せる状態)
                 btnChangeAttitude.interactable = true;
 
+                // タイマーの値をチャージの時間で止めるようにする
                 attitudeTimer = chargeTime;
 
                 // 満タン時のエフェクト
@@ -232,7 +209,7 @@ public class PlayerController : MonoBehaviour
                 // 強制的に姿勢を直滑降に戻す
                 ChangeAttitude();
             }
-        }            
+        }
     }
 
     /// <summary>
@@ -241,11 +218,12 @@ public class PlayerController : MonoBehaviour
     private void ChangeAttitude() {
         switch (attitudeType) {
             case AttitudeType.Straight:
-                if(isCharge == false) {
+                if (isCharge == false) {
                     return;
                 }
 
                 isCharge = false;
+
                 attitudeType = AttitudeType.Prone;
                 anim.SetBool("Prone", true);
 
