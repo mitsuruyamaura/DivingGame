@@ -39,6 +39,8 @@ public class Player : MonoBehaviour
     private float chargeTime = 2.0f;
     private bool isCharge;
 
+    private Animator anim;
+
     [SerializeField, Header("水しぶきのエフェクト")]
     private GameObject waterEffectPrefab = null;
 
@@ -57,8 +59,14 @@ public class Player : MonoBehaviour
     [SerializeField]
     private ShinyEffectForUGUI shinyEffect = null;
 
+    [SerializeField]
+    private Transform limitLeftBottom;
 
-    private Animator anim;
+    [SerializeField]
+    private Transform limitRightTop;
+
+    [SerializeField]
+    private FloatingJoystick joystick = null;
 
 
     void Start() {
@@ -92,6 +100,10 @@ public class Player : MonoBehaviour
         //Debug.Log(x);
         //Debug.Log(z);
 
+        x = joystick.Horizontal;
+        z = joystick.Vertical;
+
+        //if(x != 0 || z != 0)
         // velocity(速度)に新しい値を代入して移動
         rb.velocity = new Vector3(x * moveSpeed, -fallSpeed, z * moveSpeed);
 
@@ -101,7 +113,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider col) {
         if (col.gameObject.tag == "Water" && inWater == false) {
-
             inWater = true;
 
 
@@ -161,6 +172,9 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) {
             ChangeAttitude();
         }
+
+        // 移動範囲内か確認
+        LimitMoveArea();
 
         // 姿勢が普通の状態
         if (isCharge == false && attitudeType == AttitudeType.Straight) {
@@ -244,5 +258,19 @@ public class Player : MonoBehaviour
                 //transform.eulerAngles = straightRotation;
                 break;
         }
+    }
+
+    /// <summary>
+    /// 移動範囲の制限
+    /// </summary>
+    private void LimitMoveArea() {
+        // 現在のXの位置が移動範囲内に収まっているか確認し、超えていた場合には下限か上限に合わせる
+        float limitX = Mathf.Clamp(transform.position.x, limitLeftBottom.position.x, limitRightTop.position.x);
+
+        // 現在のZの位置が移動範囲内に収まっているか確認し、超えていた場合には下限か上限に合わせる
+        float limitZ = Mathf.Clamp(transform.position.z, limitLeftBottom.position.z, limitRightTop.position.z);
+
+        // 制限値内になるように位置情報を更新
+        transform.position = new Vector3(limitX, transform.position.y, limitZ);
     }
 }
