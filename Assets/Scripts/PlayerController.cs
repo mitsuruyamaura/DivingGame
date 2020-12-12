@@ -67,16 +67,14 @@ public class PlayerController : MonoBehaviour
 
     private Animator anim;
 
+    [SerializeField]
+    private Transform limitLeftBottom = null;
 
+    [SerializeField]
+    private Transform limitRightTop = null;
 
-    // mi
-
-
-
-
-
-    [SerializeField,HideInInspector]
-    private Joystick joystick = null;
+    [SerializeField]
+    private FloatingJoystick joystick = null;
 
 
     void Start()
@@ -116,6 +114,11 @@ public class PlayerController : MonoBehaviour
         //rb.velocity = new Vector3(moveDir.x * moveSpeed, -fallSpeed, moveDir.z * moveSpeed);
 
         rb.velocity = new Vector3(x * moveSpeed, -fallSpeed, z * moveSpeed);
+
+        float limitX = Mathf.Clamp(transform.position.x, limitLeftBottom.position.x, limitRightTop.position.x);
+        float limitZ = Mathf.Clamp(transform.position.z, limitLeftBottom.position.z, limitRightTop.position.z);
+
+        transform.position = new Vector3(limitX, transform.position.y, limitZ);
 
         Debug.Log(rb.velocity);
     }
