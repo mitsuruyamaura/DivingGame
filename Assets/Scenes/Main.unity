@@ -3544,7 +3544,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &800931272
 Transform:
   m_ObjectHideFlags: 0
@@ -6232,6 +6232,13 @@ MonoBehaviour:
   cameraController: {fileID: 963194229}
   resultPopUp: {fileID: 659973841}
   audioManager: {fileID: 1680165629}
+  isRandomStaging: 1
+  movingFlowerCircleRatio: 50
+  scalingFlowerCircleRatio: 50
+  flowerCirclePrefab: {fileID: 8878853384441555369, guid: 70b812f7b9d23e749b7f2734d3e7d79e,
+    type: 3}
+  limitLeftBottom: {fileID: 36220525}
+  limitRightTop: {fileID: 289146741}
   bgms: []
 --- !u!4 &1156799795
 Transform:
@@ -9153,6 +9160,11 @@ MonoBehaviour:
   boxCollider: {fileID: 7574985511416657128}
   effectPrefab: {fileID: 100010, guid: 214bf6b1f924e43108a92f13c4db31a2, type: 3}
   flowerSE: {fileID: 8300000, guid: 2d0769ebdc8ebca4eb02540f8112cac3, type: 3}
-  isMoveing: 1
+  isMoving: 0
+  randomMovingRatio: 0
   duration: 3
   moveDistance: 5
+  durationRange: {x: 0, y: 0}
+  moveDistanceRange: {x: 0, y: 0}
+  flowerSizes: []
+  pointRate: []

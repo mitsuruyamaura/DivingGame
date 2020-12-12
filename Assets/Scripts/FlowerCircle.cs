@@ -20,7 +20,10 @@ public class FlowerCircle : MonoBehaviour
     private AudioClip flowerSE;
 
     [SerializeField, Header("移動させる場合スイッチ入れる")]
-    private bool isMoveing;
+    private bool isMoving;
+
+    [SerializeField, Header("移動する時間と距離をランダムにする割合"), Range(0, 100)]
+    private int randomMovingRatio;
 
     [SerializeField, Header("移動時間")]
     private float duration;
@@ -29,12 +32,26 @@ public class FlowerCircle : MonoBehaviour
     private float moveDistance;
 
 
+    [SerializeField, Header("移動時間のランダム幅")]
+    private Vector2 durationRange;
+
+    [SerializeField, Header("移動距離のランダム幅")]
+    private Vector2 moveDistanceRange;
+
+
+    [SerializeField, Header("大きさの設定")]
+    private float[] flowerSizes;
+
+    [SerializeField, Header("点数の倍率")]
+    private float[] pointRate;
+
+
     void Start()
     {
         transform.DORotate(new Vector3(0, 360, 0), 5.0f, RotateMode.FastBeyond360).SetEase(Ease.Linear).SetLoops(-1, LoopType.Restart);
         //flowerObjs = GetAllChildren();
 
-        if (isMoveing) {
+        if (isMoving) {
             transform.DOMoveZ(transform.position.z + moveDistance, duration).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
         }
     }
@@ -89,5 +106,67 @@ public class FlowerCircle : MonoBehaviour
         Destroy(effect, 1.0f);
 
         Destroy(gameObject, 1.0f);
+    }
+
+    /// <summary>
+    /// 移動する花輪の設定
+    /// </summary>
+    public void SetUpMovingFlowerCircle(bool isMove, bool isScaling) {
+
+        // 移動する花輪か、通常の花輪かの設定
+        isMoving = isMove;
+
+        // 移動する場合
+        if (isMoving) {
+
+            // ランダムな移動時間や距離を使うか判定
+            if (JudgeRandomMoving()) {
+
+                // ランダムの場合には、移動時間と距離のランダム設定を行う
+                RandomMoveOn();
+            }
+        }
+
+        // 花輪の大きさを変更する場合
+        if (isScaling) {
+
+            // 大きさを変更
+            ChangeScales();
+        }
+    }
+
+    /// <summary>
+    /// 移動時間と距離をランダムにするか判定
+    /// </summary>
+    /// <returns></returns>
+    private bool JudgeRandomMoving() {
+        return Random.Range(0, 100) <= randomMovingRatio;
+    }
+
+    /// <summary>
+    /// ランダム値を取得して移動
+    /// </summary>
+    private void RandomMoveOn() {
+
+        // 移動時間をランダム値の範囲で設定
+        duration = Random.Range(durationRange.x, durationRange.y);
+
+        // 移動距離をランダム値の範囲で設定
+        moveDistance = Random.Range(moveDistanceRange.x, moveDistanceRange.y);
+    }
+
+    /// <summary>
+    /// 大きさを変更して点数に反映
+    /// </summary>
+    private void ChangeScales() {
+
+        // ランダム値の範囲内で大きさを設定
+        int index = Random.Range(0, flowerSizes.Length);
+
+        // 大きさを変更
+        transform.localScale *= flowerSizes[index];
+
+        // 点数を変更
+        point = Mathf.CeilToInt(point * pointRate[index]);
     }
 }
