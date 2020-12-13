@@ -33,11 +33,11 @@ public class GameManager : MonoBehaviour        // GameManagerにする
     [SerializeField, Header("ステージをランダム生成する場合にはチェックする")]
     private bool isRandomStaging = false;
 
-    [SerializeField, Header("移動する花輪の割合"),Range(0, 100)]
-    private int movingFlowerCircleRatio = 0;
+    [SerializeField, Header("移動する花輪の割合"), Range(0, 100)]
+    private int movingFlowerCirclePercent = 0;
 
     [SerializeField, Header("大きさが変化する花輪の割合"), Range(0, 100)]
-    private int scalingFlowerCircleRatio = 0;
+    private int scalingFlowerCirclePercent = 0;
 
     [SerializeField]
     private FlowerCircle flowerCirclePrefab = null;
@@ -115,24 +115,24 @@ public class GameManager : MonoBehaviour        // GameManagerにする
     private IEnumerator CreateRandomStage() {
 
         // ステージの長さ
-        int stageDistance = (int)(goal.position.y);
+        int flowerHeight = (int)(goal.position.y);
         int count = 0;
-        Debug.Log(stageDistance);
+        Debug.Log("初期の花輪のスタート位置 : " + flowerHeight);
 
-        while (stageDistance <= player.transform.position.y) {
-            stageDistance += Random.Range(5, 11);
+        while (flowerHeight <= player.transform.position.y) {
+            flowerHeight += Random.Range(5, 11);
 
-            Debug.Log(stageDistance);
+            Debug.Log("現在の花輪の生成位置 : " + flowerHeight);
 
             // 位置を設定して生成
-            FlowerCircle flowerCircle = Instantiate(flowerCirclePrefab, new Vector3(Random.Range(limitLeftBottom.position.x, limitRightTop.position.x), stageDistance, Random.Range(limitLeftBottom.position.z, limitRightTop.position.z)),Quaternion.identity);
+            FlowerCircle flowerCircle = Instantiate(flowerCirclePrefab, new Vector3(Random.Range(limitLeftBottom.position.x, limitRightTop.position.x), flowerHeight, Random.Range(limitLeftBottom.position.z, limitRightTop.position.z)),Quaternion.identity);
             
             // 花輪の初期設定
-            flowerCircle.SetUpMovingFlowerCircle(Random.Range(0, 100) <= movingFlowerCircleRatio, Random.Range(0, 100) <= scalingFlowerCircleRatio);
+            flowerCircle.SetUpMovingFlowerCircle(Random.Range(0, 100) <= movingFlowerCirclePercent, Random.Range(0, 100) <= scalingFlowerCirclePercent);
 
             count++;
 
-            Debug.Log("花輪生成 : " + count);
+            Debug.Log("花輪の合計生成数 : " + count);
 
             yield return null;
         }

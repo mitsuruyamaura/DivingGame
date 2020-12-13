@@ -270,4 +270,14 @@ public class PlayerController : MonoBehaviour
                 break;
         }
     }
+
+    public void StopMove() {
+        rb.isKinematic = true;
+        rb.velocity = Vector3.zero;
+    }
+
+    public void ResumeMove() {
+        rb.isKinematic = false;
+        rb.velocity = new Vector3(0, -fallSpeed, 0);
+    }
 }

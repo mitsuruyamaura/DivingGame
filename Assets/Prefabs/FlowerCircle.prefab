@@ -74,13 +74,13 @@ MonoBehaviour:
   effectPrefab: {fileID: 100010, guid: 214bf6b1f924e43108a92f13c4db31a2, type: 3}
   flowerSE: {fileID: 8300000, guid: 2d0769ebdc8ebca4eb02540f8112cac3, type: 3}
   isMoving: 0
-  randomMovingRatio: 50
   duration: 3
   moveDistance: 5
+  randomMovingRatio: 40
   durationRange: {x: 2, y: 5}
   moveDistanceRange: {x: 3, y: 8}
   flowerSizes:
-  - 1.25
+  - 1.5
   - 0.75
   - 0.5
   pointRate:
