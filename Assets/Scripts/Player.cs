@@ -273,4 +273,30 @@ public class Player : MonoBehaviour
         // 制限値内になるように位置情報を更新
         transform.position = new Vector3(limitX, transform.position.y, limitZ);
     }
+
+    /// <summary>
+    /// キャラの落下と移動を一時停止
+    /// </summary>
+    public void StopMove() {
+        rb.isKinematic = true;
+        rb.velocity = Vector3.zero;
+    }
+
+    /// <summary>
+    /// キャラの落下と移動を再開
+    /// </summary>
+    public void ResumeMove() {
+        rb.isKinematic = false;
+        rb.velocity = new Vector3(0, -fallSpeed, 0);    
+    }
+
+    /// <summary>
+    /// スコアを半分にする
+    /// </summary>
+    public void HalveScore() {
+        score = Mathf.CeilToInt(score * 0.5f);
+        Debug.Log("スコア半分 : " + score);
+
+        txtScore.text = score.ToString();
+    }
 }

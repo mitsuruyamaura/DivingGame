@@ -22,22 +22,20 @@ public class FlowerCircle : MonoBehaviour
     [SerializeField, Header("移動させる場合スイッチ入れる")]
     private bool isMoving;
 
-    [SerializeField, Header("移動する時間と距離をランダムにする割合"), Range(0, 100)]
-    private int randomMovingRatio;
-
     [SerializeField, Header("移動時間")]
     private float duration;
 
     [SerializeField, Header("移動距離")]
     private float moveDistance;
 
+    [SerializeField, Header("移動する時間と距離をランダムにする割合"), Range(0, 100)]
+    private int randomMovingPercent;
 
     [SerializeField, Header("移動時間のランダム幅")]
     private Vector2 durationRange;
 
     [SerializeField, Header("移動距離のランダム幅")]
     private Vector2 moveDistanceRange;
-
 
     [SerializeField, Header("大きさの設定")]
     private float[] flowerSizes;
@@ -111,27 +109,27 @@ public class FlowerCircle : MonoBehaviour
     /// <summary>
     /// 移動する花輪の設定
     /// </summary>
-    public void SetUpMovingFlowerCircle(bool isMove, bool isScaling) {
+    public void SetUpMovingFlowerCircle(bool isMoving, bool isScaleChanging) {
 
         // 移動する花輪か、通常の花輪かの設定
-        isMoving = isMove;
+        this.isMoving = isMoving;
 
         // 移動する場合
-        if (isMoving) {
+        if (this.isMoving) {
 
             // ランダムな移動時間や距離を使うか判定
-            if (JudgeRandomMoving()) {
+            if (DetectRandomMovingFromPercent()) {
 
                 // ランダムの場合には、移動時間と距離のランダム設定を行う
-                RandomMoveOn();
+                ChangeRandomMoveParameters();
             }
         }
 
         // 花輪の大きさを変更する場合
-        if (isScaling) {
+        if (isScaleChanging) {
 
             // 大きさを変更
-            ChangeScales();
+            ChangeRandomScales();
         }
     }
 
@@ -139,14 +137,14 @@ public class FlowerCircle : MonoBehaviour
     /// 移動時間と距離をランダムにするか判定
     /// </summary>
     /// <returns></returns>
-    private bool JudgeRandomMoving() {
-        return Random.Range(0, 100) <= randomMovingRatio;
+    private bool DetectRandomMovingFromPercent() {
+        return Random.Range(0, 100) <= randomMovingPercent;
     }
 
     /// <summary>
     /// ランダム値を取得して移動
     /// </summary>
-    private void RandomMoveOn() {
+    private void ChangeRandomMoveParameters() {
 
         // 移動時間をランダム値の範囲で設定
         duration = Random.Range(durationRange.x, durationRange.y);
@@ -158,7 +156,7 @@ public class FlowerCircle : MonoBehaviour
     /// <summary>
     /// 大きさを変更して点数に反映
     /// </summary>
-    private void ChangeScales() {
+    private void ChangeRandomScales() {
 
         // ランダム値の範囲内で大きさを設定
         int index = Random.Range(0, flowerSizes.Length);
