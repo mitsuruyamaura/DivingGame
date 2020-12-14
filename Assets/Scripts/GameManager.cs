@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
+
 
 public class GameManager : MonoBehaviour        // GameManagerにする
 {
@@ -48,6 +50,11 @@ public class GameManager : MonoBehaviour        // GameManagerにする
     [SerializeField]
     private Transform limitRightTop = null;
 
+    [SerializeField]
+    private Slider sliderAltimeter = null;
+
+    private float startPos;
+
     // mi
 
     [SerializeField]
@@ -64,6 +71,11 @@ public class GameManager : MonoBehaviour        // GameManagerにする
         //audioSource.clip = bgms[0];
         //audioSource.Play();
 
+        // スタート地点取得
+        startPos = player.transform.position.y;
+
+        player.StopMove();
+
         // Updateを止める
         isGoal = true;
 
@@ -76,6 +88,8 @@ public class GameManager : MonoBehaviour        // GameManagerにする
 
         // Updateを再開
         isGoal = false;
+
+        player.ResumeMove();
         Debug.Log(isGoal);
     }
 
@@ -89,6 +103,9 @@ public class GameManager : MonoBehaviour        // GameManagerにする
         distance = player.transform.position.y - goal.position.y;
         txtDistance.text = distance.ToString("F2");
         //Debug.Log(distance.ToString("F2"));
+
+        // 高度計を更新
+        sliderAltimeter.DOValue(distance / startPos, 0.1f);
 
         if(distance <= 0) {
             isGoal = true;

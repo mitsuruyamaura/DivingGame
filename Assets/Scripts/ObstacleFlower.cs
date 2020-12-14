@@ -16,13 +16,17 @@ public class ObstacleFlower : MonoBehaviour
 
     private void OnTriggerEnter(Collider col) {
 
-        // 指定されたタグのゲームオブジェクトが侵入しても判定を行わない
+        // 指定されたタグのゲームオブジェクトが侵入した場合には、判定を行わない
         if(col.gameObject.tag == "Water" || col.gameObject.tag == "FlowerCircle") {
             return;
         }
 
-        // 食べる
-        StartCoroutine(EatingTarget(col.gameObject.GetComponent<Player>()));
+        // 侵入してきたゲームオブジェクトが PlayerController スクリプトを持っていたら取得
+        if (col.gameObject.TryGetComponent(out Player player)) {
+
+            // 食べる
+            StartCoroutine(EatingTarget(player));
+        }        
     }
 
     /// <summary>
@@ -56,6 +60,9 @@ public class ObstacleFlower : MonoBehaviour
 
         // キャラを上空に吐き出す
         player.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * 300, ForceMode.Impulse);
+
+        // キャラを回転させる
+        player.transform.DORotate(new Vector3(180, 0, 1080), 0.5f, RotateMode.FastBeyond360);
 
         // 小さくなりながら消す
         transform.DOScale(Vector3.zero, 0.5f);
