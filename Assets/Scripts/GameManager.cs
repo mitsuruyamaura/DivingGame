@@ -69,8 +69,8 @@ public class GameManager : MonoBehaviour        // GameManagerにする
 
     void Awake() {
 
-        // ランダムなSkyboxの設定
-        skyboxChanger.ChangeSkybox(skyboxChanger.RandomSelectIndexOfSkyboxMaterials());
+        // Skyboxの変更
+        skyboxChanger.ChangeSkybox();
     }
 
     IEnumerator Start()

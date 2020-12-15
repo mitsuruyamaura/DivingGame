@@ -7,14 +7,27 @@ public class SkyboxChanger : MonoBehaviour
     [SerializeField]
     private Material[] skyboxMaterials;
 
+    [SerializeField]
+    private int skyboxNum;   // 999 の場合、ランダムにする
+
     /// <summary>
     /// Skyboxを変更
     /// </summary>
     /// <param name="index"></param>
-    public void ChangeSkybox(int index) {
+    public void ChangeSkybox() {
 
-        // Skybox を指定された要素番号のマテリアルの Skybox に変更
-        RenderSettings.skybox = skyboxMaterials[index];
+        // ランダム設定の場合
+        if (skyboxNum == 999) {
+
+            // Skybox を指定された要素番号のマテリアルの Skybox に変更
+            RenderSettings.skybox = skyboxMaterials[RandomSelectIndexOfSkyboxMaterials()];
+        } else {
+
+            // Skybox を指定された要素番号のマテリアルの Skybox に変更
+            RenderSettings.skybox = skyboxMaterials[skyboxNum];
+        }
+
+        Debug.Log("Skybox 変更");
     }
 
     /// <summary>
