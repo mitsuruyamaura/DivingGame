@@ -55,12 +55,23 @@ public class GameManager : MonoBehaviour        // GameManagerにする
 
     private float startPos;
 
+    [SerializeField]
+    private SkyboxChanger skyboxChanger;
+
+
     // mi
 
     [SerializeField]
     private AudioClip[] bgms = null;
 
     private AudioSource audioSource;
+
+
+    void Awake() {
+
+        // Skyboxの変更
+        skyboxChanger.ChangeSkybox();
+    }
 
     IEnumerator Start()
     {
