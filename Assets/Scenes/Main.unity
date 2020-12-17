@@ -3995,7 +3995,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &800931272
 Transform:
   m_ObjectHideFlags: 0
@@ -4035,7 +4035,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &854558977
 Transform:
   m_ObjectHideFlags: 0
@@ -4594,7 +4594,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &954081772
 Transform:
   m_ObjectHideFlags: 0
@@ -5233,7 +5233,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1047119935
 GameObject:
   m_ObjectHideFlags: 0
@@ -7066,6 +7066,10 @@ MonoBehaviour:
   limitRightTop: {fileID: 289146741}
   sliderAltimeter: {fileID: 1956350261}
   skyboxChanger: {fileID: 1539398123}
+  isRandomObjects: 1
+  randomObjPrefabs:
+  - {fileID: 958156573152441710, guid: 42bda49df0336ee4583ffd7ed071e015, type: 3}
+  - {fileID: 2330587561808848820, guid: 9d6317f06e9e0624e9a87dd196e0e30d, type: 3}
   bgms: []
 --- !u!4 &1156799795
 Transform:
