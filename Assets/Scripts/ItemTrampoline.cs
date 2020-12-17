@@ -7,6 +7,9 @@ public class ItemTrampoline : MonoBehaviour
 {
     private BoxCollider boxCol;
 
+    [SerializeField, Header("跳ねたときの空気抵抗値")]
+    private float airResistance;
+
     void Start() {
         boxCol = GetComponent<BoxCollider>();
     }
@@ -19,7 +22,7 @@ public class ItemTrampoline : MonoBehaviour
 
         // 侵入してきたゲームオブジェクトが PlayerController スクリプトを持っていたら取得
         if (col.gameObject.TryGetComponent(out Player player)) {
-            StartCoroutine(Bound(player));
+            Bound(player);
         }
     }
 
@@ -27,33 +30,21 @@ public class ItemTrampoline : MonoBehaviour
     /// バウンドさせる
     /// </summary>
     /// <param name="player"></param>
-    private IEnumerator Bound(Player player) {
+    private void Bound(Player player) {
 
         // コライダーをオフにして重複判定を防止する
         boxCol.enabled = false;
 
-        // キャラを中央に移動させる
-        //player.transform.SetParent(transform);
-        //player.transform.localPosition = new Vector3(0, 2.5f, 0);
-        //player.transform.SetParent(null);
-
-        // キャラの移動を一時停止し、キー入力を受け付けない状態にする
-        player.StopMove();
-
-        yield return new WaitForSeconds(0.15f);
-
-        // キャラの移動をできる状態に戻す
-        player.ResumeMove();
-
-        // キャラを上空にバウンドさせる
+        // キャラを上空にバウンドさせる(操作は可能)
         player.gameObject.GetComponent<Rigidbody>().AddForce(transform.up * Random.Range(800, 1000), ForceMode.Impulse);
 
         // キャラを回転させる
-        player.transform.DORotate(new Vector3(90, 0, 1080), 1.5f, RotateMode.FastBeyond360)
+        player.transform.DORotate(new Vector3(90, 1080, 0), 1.5f, RotateMode.FastBeyond360)
             .OnComplete(() => {
-                //player.transform.DORotate(new Vector3(180, 0, 0), 0.25f);
-                player.Damping();
-                Destroy(gameObject, 0.5f);
+                // しばらくの間、落下速度をゆっくりにする
+                player.DampingDrag(airResistance);
             });
+        
+        Destroy(gameObject);
     }
 }

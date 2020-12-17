@@ -300,9 +300,19 @@ public class Player : MonoBehaviour
         txtScore.text = score.ToString();
     }
 
-    public void Damping() {
-        //transform.DORotate(new Vector3(90, 0, 0), 0.25f, RotateMode.WorldAxisAdd);
-        rb.drag = 25.0f;
-        DOTween.To(() => rb.drag, (x) => rb.drag = x, 0, 3.0f).OnComplete(()=> { transform.DORotate(straightRotation, 0.25f); });
+    /// <summary>
+    /// 落下速度を減衰させながら元に戻す
+    /// </summary>
+    /// <param name="airResistance"></param>
+    public void DampingDrag(float airResistance) {
+ 
+        rb.drag = airResistance;
+        DOTween.To(() => rb.drag, (x) => rb.drag = x, 0, 3.0f)
+            .OnComplete(()=> {
+                if (transform.rotation.x != 1) {
+                    Debug.Log(transform.rotation.x);
+                    transform.DORotate(straightRotation, 0.25f);
+                }
+            });
     }
 }
