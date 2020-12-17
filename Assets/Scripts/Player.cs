@@ -299,4 +299,10 @@ public class Player : MonoBehaviour
 
         txtScore.text = score.ToString();
     }
+
+    public void Damping() {
+        //transform.DORotate(new Vector3(90, 0, 0), 0.25f, RotateMode.WorldAxisAdd);
+        rb.drag = 25.0f;
+        DOTween.To(() => rb.drag, (x) => rb.drag = x, 0, 3.0f).OnComplete(()=> { transform.DORotate(straightRotation, 0.25f); });
+    }
 }
