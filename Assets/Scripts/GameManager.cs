@@ -61,7 +61,7 @@ public class GameManager : MonoBehaviour        // GameManagerにする
     [SerializeField, Header("障害物とアイテムをランダムに生成する場合にはチェックする")]
     private bool isRandomObjects;
 
-    [SerializeField]
+    [SerializeField,Header("障害物とアイテムのプレファブ登録")]
     private GameObject[] randomObjPrefabs;
 
 
