@@ -69,6 +69,11 @@ public class Player : MonoBehaviour
     private FloatingJoystick joystick = null;
 
 
+    // mi
+    [SerializeField]
+    private Image imgAltimeterIcon;
+
+
     void Start() {
         rb = GetComponent<Rigidbody>();
 
@@ -88,6 +93,7 @@ public class Player : MonoBehaviour
 
     void FixedUpdate() {
         if (inWater) {
+
             //rb.velocity = Vector3.zero;
             return;
         }
@@ -151,7 +157,12 @@ public class Player : MonoBehaviour
     /// </summary>
     /// <returns></returns>
     private IEnumerator OutOfWater() {
-        
+
+        yield return new WaitForSeconds(0.1f);
+
+        if (attitudeType == AttitudeType.Prone) {
+            ChangeAttitude();
+        }
 
         yield return new WaitForSeconds(1.0f);
 
@@ -159,12 +170,12 @@ public class Player : MonoBehaviour
 
         transform.eulerAngles = new Vector3(-30, 180, 0);
 
-        //transform.DOMoveY(0, 1.0f);
         transform.DOMoveY(4.7f, 1.0f);
     }
 
     void Update() {
         if (inWater) {
+
             btnChangeAttitude.interactable = false;
             return;
         }
@@ -245,6 +256,10 @@ public class Player : MonoBehaviour
                 rb.drag = 25.0f;
 
                 btnChangeAttitude.transform.GetChild(0).DORotate(new Vector3(0, 0, 180), 0.25f);
+
+                // 高度計のアイコンの角度を変更
+                ChangeRotateAltimeterIcon(90.0f);
+                
                 //transform.eulerAngles = proneRotation;
                 break;
             case AttitudeType.Prone:
@@ -255,6 +270,10 @@ public class Player : MonoBehaviour
                 rb.drag = 0f;
 
                 btnChangeAttitude.transform.GetChild(0).DORotate(new Vector3(0, 0, 90), 0.25f);
+
+                // 高度計のアイコンの角度を元に戻す
+                ChangeRotateAltimeterIcon(-180.0f);
+
                 //transform.eulerAngles = straightRotation;
                 break;
         }
@@ -314,5 +333,14 @@ public class Player : MonoBehaviour
                     transform.DORotate(straightRotation, 0.25f);
                 }
             });
+    }
+
+
+    /// <summary>
+    /// 高度計のアイコンの角度を姿勢変更ボタンと同期
+    /// </summary>
+    /// <param name="angle"></param>
+    public void ChangeRotateAltimeterIcon(float angle) {
+        imgAltimeterIcon.transform.DORotate(new Vector3(0, 0, angle), 0.25f);
     }
 }

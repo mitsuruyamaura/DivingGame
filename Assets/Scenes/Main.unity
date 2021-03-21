@@ -399,6 +399,7 @@ MonoBehaviour:
   limitLeftBottom: {fileID: 36220525}
   limitRightTop: {fileID: 289146741}
   joystick: {fileID: 2029118234}
+  imgAltimeterIcon: {fileID: 237007134}
 --- !u!136 &90511909
 CapsuleCollider:
   m_ObjectHideFlags: 0

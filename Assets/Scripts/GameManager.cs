@@ -50,8 +50,7 @@ public class GameManager : MonoBehaviour        // GameManagerにする
     [SerializeField]
     private Transform limitRightTop = null;
 
-    [SerializeField]
-    private Slider sliderAltimeter = null;
+    public Slider sliderAltimeter = null;
 
     private float startPos;
 
@@ -91,6 +90,7 @@ public class GameManager : MonoBehaviour        // GameManagerにする
         // スタート地点取得
         startPos = player.transform.position.y;
 
+        // プレイヤーの移動を停止
         player.StopMove();
 
         // Updateを止める
